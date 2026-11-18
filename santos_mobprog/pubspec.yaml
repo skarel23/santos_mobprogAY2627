@@ -19,14 +19,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-    - assets/icons/
-    - assets/images/
+ # assets:
+   # - assets/icons/
+    #- assets/images/
 
-  fonts:
-    - family: Klavika
-      fonts: 
-        - asset: assets/fonts/KlavikaBoldBold.otf
-    - family: Frutiger
-      fonts:
-        - asset: assets/fonts/FrutigerLTStd-Roman.otf
+  #fonts:
+   # - family: Klavika
+     # fonts: 
+       # - asset: assets/fonts/KlavikaBoldBold.otf
+   # - family: Frutiger
+    #  fonts:
+      #  - asset: assets/fonts/FrutigerLTStd-Roman.otf

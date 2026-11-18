@@ -9,6 +9,7 @@ class NewsFeedCard extends StatelessWidget {
   final String date;
   final int numOfLikes;
   final bool hasImage;
+
   const NewsFeedCard({
     super.key,
     required this.userName,
@@ -30,7 +31,11 @@ class NewsFeedCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(Icons.person),
+                // Enhancement 2: User profile avatar
+                CircleAvatar(
+                  radius: ScreenUtil().setSp(20),
+                  backgroundImage: const NetworkImage('https://picsum.photos/150'),
+                ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
                 ),
@@ -64,8 +69,8 @@ class NewsFeedCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
-                Icon(Icons.more_horiz),
+                const Spacer(),
+                const Icon(Icons.more_horiz),
               ],
             ),
             SizedBox(height: ScreenUtil().setHeight(5)),
@@ -76,75 +81,66 @@ class NewsFeedCard extends StatelessWidget {
               color: Colors.black,
             ),
             SizedBox(height: ScreenUtil().setHeight(5)),
+            // Enhancement 1: Dynamic Image widget
             hasImage == true
-                ? const Placeholder()
+                ? Image.network(
+                    'https://picsum.photos/600/350',
+                    width: double.infinity,
+                    height: ScreenUtil().setHeight(200),
+                    fit: BoxFit.cover,
+                  )
                 : SizedBox(
                     height: ScreenUtil().setHeight(1),
                   ),
+            // Enhancement 3: Widget-based Like, Comment, and Share buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton.icon(
+                _ActionButton(
+                  icon: Icons.thumb_up,
+                  label: numOfLikes.toString(),
                   onPressed: () {
                     print('Liked');
                   },
-                  icon: const Icon(
-                    Icons.thumb_up,
-                    color: FB_DARK_PRIMARY,
-                  ),
-                  label: CustomFont(
-                    text: numOfLikes.toString(),
-                    fontSize: ScreenUtil().setSp(12),
-                    color: FB_DARK_PRIMARY,
-                  ),
                 ),
-                TextButton.icon(
+                _ActionButton(
+                  icon: Icons.comment,
+                  label: 'Comment',
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.comment,
-                    color: FB_DARK_PRIMARY,
-                  ),
-                  label: CustomFont(
-                    text: 'Comment',
-                    fontSize: ScreenUtil().setSp(12),
-                    color: FB_DARK_PRIMARY,
-                  ),
                 ),
-                TextButton.icon(
+                _ActionButton(
+                  icon: Icons.redo,
+                  label: 'Share',
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.redo,
-                    color: FB_DARK_PRIMARY,
-                  ),
-                  label: CustomFont(
-                    text: 'Share',
-                    fontSize: ScreenUtil().setSp(12),
-                    color: FB_DARK_PRIMARY,
-                  ),
                 ),
               ],
             ),
             Row(
               children: [
-                Icon(Icons.person),
+                // Enhancement 2: Comment bar avatar
+                CircleAvatar(
+                  radius: ScreenUtil().setSp(14),
+                  backgroundImage: const NetworkImage('https://picsum.photos/150'),
+                ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(ScreenUtil().setSp(10), 0, 0, 0),
-                  alignment: Alignment.centerLeft,
-                  height: ScreenUtil().setHeight(35),
-                  width: ScreenUtil().setWidth(330),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(ScreenUtil().setSp(10))
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(ScreenUtil().setSp(10), 0, 0, 0),
+                    alignment: Alignment.centerLeft,
+                    height: ScreenUtil().setHeight(35),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(ScreenUtil().setSp(10)),
+                      ),
                     ),
-                  ),
-                  child: CustomFont(
-                    text: 'Write a comment...',
-                    fontSize: ScreenUtil().setSp(11),
-                    color: Colors.grey,
+                    child: CustomFont(
+                      text: 'Write a comment...',
+                      fontSize: ScreenUtil().setSp(11),
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
               ],
@@ -160,6 +156,35 @@ class NewsFeedCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Enhancement 3: Reusable widget for post action buttons
+class _ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+
+  const _ActionButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        color: FB_DARK_PRIMARY,
+      ),
+      label: CustomFont(
+        text: label,
+        fontSize: ScreenUtil().setSp(12),
+        color: FB_DARK_PRIMARY,
       ),
     );
   }
